@@ -1,8 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "1.3.31"
-    maven
+    kotlin("jvm") version "2.0.0"
 }
 
 group = "dev.vishna"
@@ -14,14 +13,22 @@ repositories {
 }
 
 dependencies {
-    compile(kotlin("stdlib-jdk8"))
-    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1")
-    compile("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
-    testCompile("junit", "junit", "4.12")
-    testCompile("org.amshove.kluent:kluent:1.34")
+    testImplementation("junit", "junit", "4.12")
+    testImplementation("org.amshove.kluent:kluent:1.34")
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+kotlin {
+    jvmToolchain {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+}
+
+java {
+    toolchain {
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 }
